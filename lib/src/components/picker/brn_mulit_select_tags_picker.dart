@@ -17,8 +17,7 @@ enum BrnMultiSelectTagsLayoutStyle {
 }
 
 typedef BrnMultiSelectTagStringBuilder<V> = String Function(V data);
-typedef BrnMultiSelectTagOnItemClick = void Function(
-    BrnTagItemBean onTapTag, bool isSelect);
+typedef BrnMultiSelectTagOnItemClick = void Function(BrnTagItemBean onTapTag, bool isSelect);
 
 /// 多选标签弹框,适用于底部弹出 Picker，且选择样式为 Tag 的场景。
 /// 功能：多选标签弹框，适用于从底部弹出的情况，属于 Picker；
@@ -40,13 +39,7 @@ class BrnMultiSelectTagsPicker extends CommonTagsPicker {
     this.layoutStyle = BrnMultiSelectTagsLayoutStyle.average,
     BrnPickerTitleConfig pickerTitleConfig = BrnPickerTitleConfig.Default,
     BrnPickerConfig? themeData,
-  }) : super(
-            key: key,
-            context: context,
-            onConfirm: onConfirm,
-            onCancel: onCancel,
-            pickerTitleConfig: pickerTitleConfig,
-            themeData: themeData);
+  }) : super(key: key, context: context, onConfirm: onConfirm, onCancel: onCancel, pickerTitleConfig: pickerTitleConfig, themeData: themeData);
 
   /// 父类属性
   final BuildContext context;
@@ -125,32 +118,15 @@ class BrnMultiSelectTagsPicker extends CommonTagsPicker {
   }
 
   ///等宽度的布局
-  Widget _buildGridViewWidget(
-      BuildContext context, VoidCallback? onUpdate, double maxWidth) {
-    int brnCrossAxisCount =
-        (this.crossAxisCount == null || this.crossAxisCount == 0)
-            ? 4
-            : this.crossAxisCount!;
-    double width =
-        (maxWidth - (brnCrossAxisCount - 1) * 12 - 40) / brnCrossAxisCount;
+  Widget _buildGridViewWidget(BuildContext context, VoidCallback? onUpdate, double maxWidth) {
+    int brnCrossAxisCount = (this.crossAxisCount == null || this.crossAxisCount == 0) ? 4 : this.crossAxisCount!;
+    double width = (maxWidth - (brnCrossAxisCount - 1) * 12 - 40) / brnCrossAxisCount;
     //计算宽高比
     double brnChildAspectRatio = width / this.itemHeight;
-    Color selectedTagTitleColor = this.tagPickerConfig.selectedTagTitleColor ??
-        BrnThemeConfigurator.instance.getConfig().commonConfig.brandPrimary;
-    Color tagTitleColor = this.tagPickerConfig.tagTitleColor ??
-        BrnThemeConfigurator.instance
-            .getConfig()
-            .commonConfig
-            .colorTextImportant;
-    Color tagBackgroundColor =
-        this.tagPickerConfig.tagBackgroudColor ?? Color(0xffF8F8F8);
-    Color selectedTagBackgroundColor =
-        this.tagPickerConfig.selectedTagBackgroudColor ??
-            BrnThemeConfigurator.instance
-                .getConfig()
-                .commonConfig
-                .brandPrimary
-                .withAlpha(0x14);
+    Color selectedTagTitleColor = this.tagPickerConfig.selectedTagTitleColor ?? BrnThemeConfigurator.instance.getConfig().commonConfig.brandPrimary;
+    Color tagTitleColor = this.tagPickerConfig.tagTitleColor ?? BrnThemeConfigurator.instance.getConfig().commonConfig.colorTextImportant;
+    Color tagBackgroundColor = this.tagPickerConfig.tagBackgroudColor ?? Color(0xffF8F8F8);
+    Color selectedTagBackgroundColor = this.tagPickerConfig.selectedTagBackgroudColor ?? BrnThemeConfigurator.instance.getConfig().commonConfig.brandPrimary.withAlpha(0x14);
     return Container(
       padding: EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0, bottom: 0.0),
       constraints: BoxConstraints(maxHeight: 322, minHeight: 120),
@@ -164,22 +140,21 @@ class BrnMultiSelectTagsPicker extends CommonTagsPicker {
         //宽高比
         childAspectRatio: brnChildAspectRatio,
         //GridView内边距
-        padding:
-            EdgeInsets.only(top: 20.0, left: 0.0, right: 0.0, bottom: 20.0),
+        padding: EdgeInsets.only(top: 20.0, left: 0.0, right: 0.0, bottom: 20.0),
         primary: true,
         children: this._sourceTags.map((choice) {
           bool selected = choice.isSelect;
           Color titleColor = selected ? selectedTagTitleColor : tagTitleColor;
-          EdgeInsets edgeInsets = this.tagPickerConfig.chipPadding ??
-              EdgeInsets.only(top: 9.0, left: 10.0, right: 10, bottom: 11.0);
+          EdgeInsets edgeInsets = this.tagPickerConfig.chipPadding ?? EdgeInsets.only(top: 9.0, left: 10.0, right: 10, bottom: 11.0);
           return ChoiceChip(
             selected: selected,
+            showCheckmark: false,
             padding: edgeInsets,
             pressElevation: 0,
             backgroundColor: tagBackgroundColor,
             selectedColor: selectedTagBackgroundColor,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(2.0)),
+            /*shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2.0)),*/
+            shape: CircleBorder(),
             label: Container(
               width: width,
               child: Text(
@@ -187,17 +162,11 @@ class BrnMultiSelectTagsPicker extends CommonTagsPicker {
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
                 strutStyle: StrutStyle(forceStrutHeight: true, height: 1),
-                style: TextStyle(
-                    height: 1,
-                    color: titleColor,
-                    fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
-                    fontSize: this.tagPickerConfig.tagTitleFontSize),
+                style: TextStyle(height: 1, color: titleColor, fontWeight: selected ? FontWeight.w600 : FontWeight.w400, fontSize: this.tagPickerConfig.tagTitleFontSize),
               ),
             ),
             onSelected: (bool value) {
-              if (_selectedTags.length >= this.maxSelectItemCount &&
-                  this.maxSelectItemCount > 0 &&
-                  value == true) {
+              if (_selectedTags.length >= this.maxSelectItemCount && this.maxSelectItemCount > 0 && value == true) {
                 if (this.onMaxSelectClick != null) {
                   // ignore: unnecessary_statements
                   this.onMaxSelectClick!();
@@ -215,24 +184,9 @@ class BrnMultiSelectTagsPicker extends CommonTagsPicker {
 
   ///流式布局
   Widget _buildWrapViewWidget(BuildContext context, VoidCallback? onUpdate) {
-    BrnTagConfig tagConfig = BrnThemeConfigurator.instance
-        .getConfig(configId: themeData!.configId)
-        .tagConfig
-        .merge(BrnTagConfig());
-    tagConfig = tagConfig.merge(BrnTagConfig(
-        selectTagTextStyle: BrnTextStyle(
-            height: 1,
-            color: this.tagPickerConfig.selectedTagTitleColor,
-            fontSize: this.tagPickerConfig.tagTitleFontSize,
-            fontWeight: FontWeight.w600),
-        tagTextStyle: BrnTextStyle(
-            height: 1,
-            color: this.tagPickerConfig.tagTitleColor,
-            fontSize: this.tagPickerConfig.tagTitleFontSize,
-            fontWeight: FontWeight.w400),
-        tagBackgroundColor: this.tagPickerConfig.tagBackgroudColor,
-        selectedTagBackgroundColor:
-            this.tagPickerConfig.selectedTagBackgroudColor));
+    BrnTagConfig tagConfig = BrnThemeConfigurator.instance.getConfig(configId: themeData!.configId).tagConfig.merge(BrnTagConfig());
+    tagConfig = tagConfig
+        .merge(BrnTagConfig(selectTagTextStyle: BrnTextStyle(height: 1, color: this.tagPickerConfig.selectedTagTitleColor, fontSize: this.tagPickerConfig.tagTitleFontSize, fontWeight: FontWeight.w600), tagTextStyle: BrnTextStyle(height: 1, color: this.tagPickerConfig.tagTitleColor, fontSize: this.tagPickerConfig.tagTitleFontSize, fontWeight: FontWeight.w400), tagBackgroundColor: this.tagPickerConfig.tagBackgroudColor, selectedTagBackgroundColor: this.tagPickerConfig.selectedTagBackgroudColor));
 
     return Container(
         padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
@@ -241,34 +195,26 @@ class BrnMultiSelectTagsPicker extends CommonTagsPicker {
           runSpacing: 15.0,
           children: this._sourceTags.map((choice) {
             bool selected = choice.isSelect;
-            Color titleColor = selected
-                ? tagConfig.selectTagTextStyle.color!
-                : tagConfig.tagTextStyle.color!;
-            EdgeInsets edgeInsets = this.tagPickerConfig.chipPadding ??
-                EdgeInsets.only(top: 9.0, left: 10.0, right: 10, bottom: 11.0);
+            Color titleColor = selected ? tagConfig.selectTagTextStyle.color! : tagConfig.tagTextStyle.color!;
+            EdgeInsets edgeInsets = this.tagPickerConfig.chipPadding ?? EdgeInsets.only(top: 9.0, left: 10.0, right: 10, bottom: 11.0);
             return ChoiceChip(
               selected: selected,
+              showCheckmark: false,
               padding: edgeInsets,
               pressElevation: 0,
               backgroundColor: tagConfig.tagBackgroundColor,
               selectedColor: tagConfig.selectedTagBackgroundColor,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(2.0)),
+              /*shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2.0)),*/
+              shape: CircleBorder(),
               label: Text(
                 onTagValueGetter(choice),
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
                 strutStyle: StrutStyle(forceStrutHeight: true, height: 1),
-                style: TextStyle(
-                    height: 1,
-                    color: titleColor,
-                    fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
-                    fontSize: this.tagPickerConfig.tagTitleFontSize),
+                style: TextStyle(height: 1, color: titleColor, fontWeight: selected ? FontWeight.w600 : FontWeight.w400, fontSize: this.tagPickerConfig.tagTitleFontSize),
               ),
               onSelected: (bool value) {
-                if (_selectedTags.length >= this.maxSelectItemCount &&
-                    this.maxSelectItemCount > 0 &&
-                    value == true) {
+                if (_selectedTags.length >= this.maxSelectItemCount && this.maxSelectItemCount > 0 && value == true) {
                   if (this.onMaxSelectClick != null) {
                     // ignore: unnecessary_statements
                     this.onMaxSelectClick!();
