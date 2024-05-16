@@ -4,7 +4,11 @@ import 'package:example/sample/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'sample/theme/config_test_utils.dart';
+
 void main() {
+  BrnInitializer.register(allThemeConfig: TestConfigUtils.defaultAllConfig);
+
   BrnIntl.add(ResourceDe.locale, ResourceDe());
   runApp(MyApp());
 }
