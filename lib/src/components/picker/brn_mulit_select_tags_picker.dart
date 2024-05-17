@@ -176,7 +176,7 @@ class BrnMultiSelectTagsPicker extends CommonTagsPicker {
                   // ignore: unnecessary_statements
                   this.onMaxSelectClick!();
                 }
-                return;
+                // return;
               }
               _clickTag(value, choice);
               onUpdate!();
