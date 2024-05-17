@@ -39,6 +39,7 @@ class BrnMultiSelectTagsPicker extends CommonTagsPicker {
     this.crossAxisCount,
     this.itemHeight = 34.0,
     this.layoutStyle = BrnMultiSelectTagsLayoutStyle.average,
+    this.shape,
     BrnPickerTitleConfig pickerTitleConfig = BrnPickerTitleConfig.Default,
     BrnPickerConfig? themeData,
   }) : super(key: key, context: context, onConfirm: onConfirm, onCancel: onCancel, pickerTitleConfig: pickerTitleConfig, themeData: themeData);
@@ -79,6 +80,8 @@ class BrnMultiSelectTagsPicker extends CommonTagsPicker {
 
   /// item的高度, 默认数值是34
   final double itemHeight;
+
+  final OutlinedBorder? shape;
 
   /// 操作类型属性
   late List<BrnTagItemBean> _selectedTags;
@@ -159,7 +162,8 @@ class BrnMultiSelectTagsPicker extends CommonTagsPicker {
             backgroundColor: tagBackgroundColor,
             selectedColor: selectedTagBackgroundColor,
             /*shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2.0)),*/
-            shape: CircleBorder(),
+            // shape: CircleBorder(),
+            shape: shape != null ? shape : CircleBorder(),
             label: Container(
               width: width,
               child: FittedBox(
@@ -213,7 +217,8 @@ class BrnMultiSelectTagsPicker extends CommonTagsPicker {
               backgroundColor: tagConfig.tagBackgroundColor,
               selectedColor: tagConfig.selectedTagBackgroundColor,
               /*shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2.0)),*/
-              shape: CircleBorder(),
+              // shape: CircleBorder(),
+              shape: shape != null ? shape : CircleBorder(),
               label: FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
