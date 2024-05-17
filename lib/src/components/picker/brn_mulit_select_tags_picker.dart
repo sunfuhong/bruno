@@ -224,7 +224,7 @@ class BrnMultiSelectTagsPicker extends CommonTagsPicker {
                     // ignore: unnecessary_statements
                     this.onMaxSelectClick!();
                   }
-                  return;
+                  // return;
                 }
                 _clickTag(value, choice);
                 onUpdate!();
@@ -258,7 +258,6 @@ class BrnMultiSelectTagsPicker extends CommonTagsPicker {
 
     if (selected) {
       tagName.isSelect = true;
-
       this._selectedTags.add(tagName);
     } else {
       tagName.isSelect = false;
