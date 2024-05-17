@@ -17,7 +17,8 @@ enum BrnMultiSelectTagsLayoutStyle {
 }
 
 typedef BrnMultiSelectTagStringBuilder<V> = String Function(V data);
-typedef BrnMultiSelectTagOnItemClick = void Function(BrnTagItemBean onTapTag, bool isSelect);
+/*typedef BrnMultiSelectTagOnItemClick = void Function(BrnTagItemBean onTapTag, bool isSelect);*/
+typedef BrnMultiSelectTagOnItemClick = void Function(List<BrnTagItemBean> _sourceTags, List<BrnTagItemBean> _selectedTags, BrnTagItemBean onTapTag, bool isSelect);
 
 /// 多选标签弹框,适用于底部弹出 Picker，且选择样式为 Tag 的场景。
 /// 功能：多选标签弹框，适用于从底部弹出的情况，属于 Picker；
@@ -32,7 +33,8 @@ class BrnMultiSelectTagsPicker extends CommonTagsPicker {
     required this.tagPickerConfig,
     required this.onTagValueGetter,
     this.onMaxSelectClick,
-    this.onItemClick,
+    this.afterItemClick,
+    this.beforeItemClick,
     this.maxSelectItemCount = 0,
     this.crossAxisCount,
     this.itemHeight = 34.0,
@@ -53,8 +55,11 @@ class BrnMultiSelectTagsPicker extends CommonTagsPicker {
   /// 当点击到最大数目时的点击事件
   final VoidCallback? onMaxSelectClick;
 
-  /// 点击某个按钮的回调
-  final BrnMultiSelectTagOnItemClick? onItemClick;
+  /// 点击某个按钮之后的回调
+  final BrnMultiSelectTagOnItemClick? afterItemClick;
+
+  /// 点击某个按钮之前的回调
+  final BrnMultiSelectTagOnItemClick? beforeItemClick;
 
   /// 一行多少个数据，默认4个
   final int? crossAxisCount;
@@ -247,8 +252,13 @@ class BrnMultiSelectTagsPicker extends CommonTagsPicker {
 
   ///每一个item的点击事件
   void _clickTag(bool selected, BrnTagItemBean tagName) {
+    if (this.beforeItemClick != null) {
+      this.beforeItemClick!(_sourceTags, _selectedTags, tagName, selected);
+    }
+
     if (selected) {
       tagName.isSelect = true;
+
       this._selectedTags.add(tagName);
     } else {
       tagName.isSelect = false;
@@ -256,8 +266,8 @@ class BrnMultiSelectTagsPicker extends CommonTagsPicker {
     }
 
     ///点击tag
-    if (this.onItemClick != null) {
-      this.onItemClick!(tagName, selected);
+    if (this.afterItemClick != null) {
+      this.afterItemClick!(_sourceTags, _selectedTags, tagName, selected);
     }
   }
 }

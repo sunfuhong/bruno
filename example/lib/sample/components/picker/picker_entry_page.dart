@@ -333,7 +333,7 @@ class PickerEntryPage extends StatelessWidget {
       crossAxisCount: 4,
       //最大选中数目 - 不设置 或者设置为0 则可以全选
       maxSelectItemCount: 5,
-      onItemClick: (BrnTagItemBean onTapTag, bool isSelect) {
+      afterItemClick: (sourceList, selectedList, BrnTagItemBean onTapTag, bool isSelect) {
         BrnToast.show(onTapTag.toString(), context);
       },
       onMaxSelectClick: () {
