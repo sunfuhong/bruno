@@ -162,12 +162,15 @@ class BrnMultiSelectTagsPicker extends CommonTagsPicker {
             shape: CircleBorder(),
             label: Container(
               width: width,
-              child: Text(
-                onTagValueGetter(choice),
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.ellipsis,
-                strutStyle: StrutStyle(forceStrutHeight: true, height: 1),
-                style: TextStyle(height: 1, color: titleColor, fontWeight: selected ? FontWeight.w600 : FontWeight.w400, fontSize: this.tagPickerConfig.tagTitleFontSize),
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  onTagValueGetter(choice),
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                  strutStyle: StrutStyle(forceStrutHeight: true, height: 1),
+                  style: TextStyle(height: 1, color: titleColor, fontWeight: selected ? FontWeight.w600 : FontWeight.w400, fontSize: this.tagPickerConfig.tagTitleFontSize),
+                ),
               ),
             ),
             onSelected: (bool value) {
@@ -211,12 +214,15 @@ class BrnMultiSelectTagsPicker extends CommonTagsPicker {
               selectedColor: tagConfig.selectedTagBackgroundColor,
               /*shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2.0)),*/
               shape: CircleBorder(),
-              label: Text(
-                onTagValueGetter(choice),
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.ellipsis,
-                strutStyle: StrutStyle(forceStrutHeight: true, height: 1),
-                style: TextStyle(height: 1, color: titleColor, fontWeight: selected ? FontWeight.w600 : FontWeight.w400, fontSize: this.tagPickerConfig.tagTitleFontSize),
+              label: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  onTagValueGetter(choice),
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                  strutStyle: StrutStyle(forceStrutHeight: true, height: 1),
+                  style: TextStyle(height: 1, color: titleColor, fontWeight: selected ? FontWeight.w600 : FontWeight.w400, fontSize: this.tagPickerConfig.tagTitleFontSize),
+                ),
               ),
               onSelected: (bool value) {
                 if (_selectedTags.length >= this.maxSelectItemCount && this.maxSelectItemCount > 0 && value == true) {
