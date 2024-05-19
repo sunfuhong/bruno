@@ -37,6 +37,7 @@ class BrnMultiSelectTagsPicker extends CommonTagsPicker {
     this.beforeItemClick,
     this.maxSelectItemCount = 0,
     this.crossAxisCount,
+    this.equalWidthMainAxisSpacing = 12,
     this.itemHeight = 34.0,
     this.layoutStyle = BrnMultiSelectTagsLayoutStyle.average,
     this.shape,
@@ -82,6 +83,8 @@ class BrnMultiSelectTagsPicker extends CommonTagsPicker {
   final double itemHeight;
 
   final OutlinedBorder? shape;
+
+  final double? equalWidthMainAxisSpacing;
 
   /// 操作类型属性
   late List<BrnTagItemBean> _selectedTags;
@@ -144,7 +147,8 @@ class BrnMultiSelectTagsPicker extends CommonTagsPicker {
         //水平子Widget之间间距
         crossAxisSpacing: 6.0,
         //垂直子Widget之间间距
-        mainAxisSpacing: 12.0,
+        /*mainAxisSpacing: 12.0,*/
+        mainAxisSpacing: equalWidthMainAxisSpacing ?? 12,
         //宽高比
         childAspectRatio: brnChildAspectRatio,
         //GridView内边距
